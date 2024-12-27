@@ -2,8 +2,12 @@
     include "_connexionBD.php";
     $reqJedis = $bd->prepare("SELECT * FROM `heros` WHERE secondaire=0 AND cote_obscur=0 ORDER BY premiere_apparition;");
     $reqJedis->execute();
+
     $reqSiths = $bd->prepare("SELECT * FROM `heros` WHERE secondaire=0 AND cote_obscur=1 ORDER BY premiere_apparition;");
     $reqSiths->execute();
+
+    
+    
     session_start();
 ?>
 
@@ -16,29 +20,51 @@
     <title>Jedis</title>
 </head>
 <body>
-    <div id="jedis">
-        <h2>Jedis</h2>
+    <h1>Jedis</h1>
+    <div id="heros">
         <?php
 
             echo "<div id='jedis_list'>";
             foreach($reqJedis as $jedis){
+                $jedi_id = $jedis['id_heros'];
                 $jedi_name = $jedis['nom'];
                 $jedi_nickname = $jedis['surnom'];
-                echo "<p class='jedis_names'>$jedi_name";
+                $sabres = explode(';', $jedis['sabres']);
+                
+
+                echo "<a class='heros_names' href='index.php?page=" . $jedi_id . "'>" . $jedi_name;
                 if (!empty($jedis['surnom'])){ echo " \"$jedi_nickname\"";} 
-                echo "</p>";}
+                
+
+                foreach ($sabres as $saber) {
+                    if (!empty($jedis['sabres'])){echo "<span class='saber_line' style='color: $saber;'>|</span>";}
+                }
+                echo "</a>";
+            }
 
             echo "</div>";
 
             echo "<div id='siths_list'>";
             foreach($reqSiths as $siths){
+                $sith_id = $siths['id_heros'];
                 $sith_name = $siths['nom'];
                 $sith_nickname = $siths['surnom'];
-                echo "<p class='siths_names'>$sith_name";
+                $sabres = explode(';', $siths['sabres']);
+
+                echo "<a class='heros_names' href='index.php?page=" . $sith_id . "'>" . $sith_name;
                 if (!empty($siths['surnom'])){ echo " \"$sith_nickname\"";} 
-                echo "</p>";}
                 
+                foreach ($sabres as $saber) {
+                    if (!empty($siths['sabres'])){echo "<span class='saber_line' style='color: $saber;'>|</span>";}
+                }
+                echo "</a>";
+            }
             echo "</div>";
+        ?>
+    </div>
+    <div id="citations">
+        <?php
+
         ?>
     </div>
 </body>
