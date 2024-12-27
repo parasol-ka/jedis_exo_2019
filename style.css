@@ -26,3 +26,10 @@ body {
     margin: 0.1rem;
     font-weight: bold;
 }
+#citations .citation {
+    font-style: italic;
+}
+#citations .citation .film_name {
+    font-style: italic;
+    color: grey;
+}
