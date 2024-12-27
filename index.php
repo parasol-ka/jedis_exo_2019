@@ -95,17 +95,9 @@
                 $citation=$citations['citation'];
                 $film=$citations['titre'];
                 echo "<p class='citation'> \"$citation\" - <span class='film_name'> $film  </span></p>";
-                
             }
-
+            echo "<a href='citation_ajout.php' id='add_button'>Ajouter une citation</a>";
         }
-
-
-        
-
-        
-
-
         ?>
     </div>
 </body>
