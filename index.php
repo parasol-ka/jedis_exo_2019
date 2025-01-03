@@ -6,13 +6,15 @@
     $reqSiths = $bd->prepare("SELECT * FROM `heros` WHERE secondaire=0 AND cote_obscur=1 ORDER BY premiere_apparition;");
     $reqSiths->execute();
 
-    $reqName = $bd->prepare("SELECT nom from heros WHERE id_heros=:hero_id;");
-    $reqName->bindvalue(':hero_id', intval($_GET['page']));
-    $reqName->execute();
+    if(isset($_GET["page"])){
+        $reqName = $bd->prepare("SELECT nom from heros WHERE id_heros=:hero_id;");
+        $reqName->bindvalue(':hero_id', intval($_GET['page']));
+        $reqName->execute();
 
-    $reqCitations = $bd->prepare("SELECT h.id_heros, h.nom, f.titre, c.id_citation, c.citation FROM heros as h JOIN citations AS c on h.id_heros=c.id_heros JOIN films AS f ON c.id_film=f.id_film WHERE h.id_heros=:hero_id ORDER BY f.annee;");
-    $reqCitations->bindvalue(':hero_id', intval($_GET['page']));
-    $reqCitations->execute();
+        $reqCitations = $bd->prepare("SELECT h.id_heros, h.nom, f.titre, c.id_citation, c.citation FROM heros as h JOIN citations AS c on h.id_heros=c.id_heros JOIN films AS f ON c.id_film=f.id_film WHERE h.id_heros=:hero_id ORDER BY f.annee;");
+        $reqCitations->bindvalue(':hero_id', intval($_GET['page']));
+        $reqCitations->execute();
+    }
     
     session_start();
 ?>
@@ -38,12 +40,14 @@
                 $sabres = explode(';', $jedis['sabres']);
                 
 
-                echo "<a class='heros_names' href='index.php?page=" . $jedi_id ;
+                echo "<a class='heros_names' href='index.php?page=$jedi_id";
                 
-                if ( $_GET["page"]==$jedi_id ) {
-                    $s = "style='font-weight: bold;'";
-                } else { $s="" ;}
-
+                if(isset($_GET["page"])){
+                    if ( $_GET["page"]==$jedi_id ) {
+                        $s = "style='font-weight: bold;'";
+                    }else { $s="" ;}
+                }else { $s="" ;}
+                
                 echo "' $s>". $jedi_name;
                 if (!empty($jedis['surnom'])){ echo " \"$jedi_nickname\"";} 
                 
